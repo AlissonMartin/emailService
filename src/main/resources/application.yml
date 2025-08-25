@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: emailService
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: {DRIVER}
+    hikari:
+      initialization-fail-timeout: 60000
+      connection-timeout: 20000
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: {DIALECT}
+    show-sql: true
+
+  flyway:
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+  email:
+    providers:
+      gmail:
+        host: ${GMAIL_HOST}
+        port: {GMAIL_PORT}
+        username: ${GMAIL_USER}
+        password: ${GMAIL_PASS}
+      ses:
+        host: ${SES_HOST}
+        port: {SES_PORT}
+        username: ${SES_USER}
+        password: ${SES_PASS}
