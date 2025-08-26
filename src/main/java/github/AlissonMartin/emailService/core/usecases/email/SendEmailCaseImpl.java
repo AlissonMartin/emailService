@@ -37,5 +37,6 @@ public class SendEmailCaseImpl implements SendEmailCase {
       emailProvider.sendEmail(input.to(), input.subject(), input.body());
       return;
     }
+    System.out.println("Could not send the email.");
   }
 }

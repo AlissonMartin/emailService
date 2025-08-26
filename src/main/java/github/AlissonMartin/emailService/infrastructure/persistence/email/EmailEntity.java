@@ -1,16 +1,18 @@
 package github.AlissonMartin.emailService.infrastructure.persistence.email;
 
 
+import github.AlissonMartin.emailService.infrastructure.persistence.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "emails")
 @Data
-public class EmailEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class EmailEntity extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +23,5 @@ public class EmailEntity {
   private String subject;
 
   private String body;
-
-  @Column(updatable = false)
-  @CreationTimestamp
-  private LocalDateTime createdAt;
 
 }

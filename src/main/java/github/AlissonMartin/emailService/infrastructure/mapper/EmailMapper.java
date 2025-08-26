@@ -10,6 +10,10 @@ public class EmailMapper {
     return new Email(emailEntity.getId(), emailEntity.getAddress(), emailEntity.getSubject(), emailEntity.getBody());
   }
 
+  public EmailEntity toEntity(Email email) {
+    return new EmailEntity(email.id(), email.address(), email.subject(), email.body());
+  }
+
   public SendEmailInput toInput(SendEmailRequest sendEmailRequest) {
     return new SendEmailInput(sendEmailRequest.to(), sendEmailRequest.subject(), sendEmailRequest.body());
   }

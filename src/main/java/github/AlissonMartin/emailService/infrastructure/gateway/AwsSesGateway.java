@@ -12,12 +12,14 @@ public class AwsSesGateway implements EmailProviderGateway {
   private final int port;
   private final String username;
   private final String password;
+  private final String from;
 
-  public AwsSesGateway(String host, int port, String username, String password) {
+  public AwsSesGateway(String host, int port, String username, String password, String from) {
     this.host = host;
     this.port = port;
     this.username = username;
     this.password = password;
+    this.from = from;
   }
 
   @Override
@@ -37,7 +39,7 @@ public class AwsSesGateway implements EmailProviderGateway {
               });
 
       Message message = new MimeMessage(session);
-      message.setFrom(new InternetAddress(""));
+      message.setFrom(new InternetAddress(from));
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(address));
       message.setSubject(subject);
       message.setText(body);
