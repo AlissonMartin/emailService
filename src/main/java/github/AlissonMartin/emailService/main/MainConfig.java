@@ -7,12 +7,15 @@ import github.AlissonMartin.emailService.core.usecases.email.SendEmailCase;
 import github.AlissonMartin.emailService.core.usecases.email.SendEmailCaseImpl;
 import github.AlissonMartin.emailService.core.usecases.emailqueue.CreateEmailQueueEmailCase;
 import github.AlissonMartin.emailService.core.usecases.emailqueue.CreateEmailQueueEmailCaseImpl;
+import github.AlissonMartin.emailService.core.usecases.emailqueue.ProcessEmailQueueCase;
+import github.AlissonMartin.emailService.core.usecases.emailqueue.ProcessEmailQueueImpl;
 import github.AlissonMartin.emailService.core.usecases.subscriber.CreateSubscriberCase;
 import github.AlissonMartin.emailService.core.usecases.subscriber.CreateSubscriberCaseImpl;
 import github.AlissonMartin.emailService.core.usecases.topic.CreateTopicCase;
 import github.AlissonMartin.emailService.core.usecases.topic.CreateTopicCaseImpl;
 import github.AlissonMartin.emailService.infrastructure.gateway.*;
 import github.AlissonMartin.emailService.infrastructure.mapper.EmailMapper;
+import github.AlissonMartin.emailService.infrastructure.mapper.EmailQueueMapper;
 import github.AlissonMartin.emailService.infrastructure.mapper.SubscriberMapper;
 import github.AlissonMartin.emailService.infrastructure.mapper.TopicMapper;
 import github.AlissonMartin.emailService.infrastructure.persistence.email.EmailRepository;
@@ -68,6 +71,11 @@ public class MainConfig {
   }
 
   @Bean
+  ProcessEmailQueueCase processEmailQueueCase(EmailQueueGateway emailQueueGateway, SendEmailCase sendEmailCase) {
+    return new ProcessEmailQueueImpl(emailQueueGateway, sendEmailCase);
+  }
+
+  @Bean
   SubscriberGateway subscriberGateway(SubscriberRepository subscriberRepository, SubscriberMapper subscriberMapper, TopicMapper topicMapper) {
     return new SubscriberRepositoryGateway(subscriberRepository, topicMapper, subscriberMapper);
   }
@@ -83,13 +91,18 @@ public class MainConfig {
   }
 
   @Bean
-  EmailQueueGateway emailQueueGateway(EmailQueueRepository emailQueueRepository, EmailMapper emailMapper, TopicMapper topicMapper) {
-    return new EmailQueueRepositoryGateway(emailQueueRepository, emailMapper, topicMapper);
+  EmailQueueGateway emailQueueGateway(EmailQueueRepository emailQueueRepository, EmailMapper emailMapper, TopicMapper topicMapper, EmailQueueMapper emailQueueMapper) {
+    return new EmailQueueRepositoryGateway(emailQueueRepository, emailMapper, topicMapper, emailQueueMapper);
   }
 
   @Bean
   EmailMapper emailMapper() {
     return new EmailMapper();
+  }
+
+  @Bean
+  EmailQueueMapper emailQueueMapper(EmailMapper emailMapper, TopicMapper topicMapper) {
+    return new EmailQueueMapper(emailMapper, topicMapper);
   }
 
   @Bean
